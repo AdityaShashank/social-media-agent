@@ -1,7 +1,7 @@
 import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
-import tweepy
+
 
 def init_db():
     conn = sqlite3.connect('users.db')
@@ -63,12 +63,6 @@ def get_social_token(username, platform):
     row = c.fetchone()
     conn.close()
     return row[0] if row else None
-
-def get_twitter_api(user_token, user_token_secret):
-    consumer_key = os.getenv('TWITTER_CONSUMER_KEY')
-    consumer_secret = os.getenv('TWITTER_CONSUMER_SECRET')
-    auth = tweepy.OAuth1UserHandler(consumer_key, consumer_secret, user_token, user_token_secret)
-    return tweepy.API(auth)
 
 def post_to_twitter(user_token, user_token_secret, content):
     api = get_twitter_api(user_token, user_token_secret)
